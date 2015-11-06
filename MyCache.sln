@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MyCache", "MyCache.vcproj", "{E295756E-6D2B-4F85-B1CA-63FE6E11A125}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E295756E-6D2B-4F85-B1CA-63FE6E11A125}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E295756E-6D2B-4F85-B1CA-63FE6E11A125}.Debug|Win32.Build.0 = Debug|Win32
+		{E295756E-6D2B-4F85-B1CA-63FE6E11A125}.Release|Win32.ActiveCfg = Release|Win32
+		{E295756E-6D2B-4F85-B1CA-63FE6E11A125}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
