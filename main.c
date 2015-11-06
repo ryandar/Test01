@@ -5,7 +5,7 @@ void main(void)
 	char c;
 	printf("Starting\n\n");
 
-	printf("Enter:");
+	printf("Enter character:");
 	c = getch();
 
 	printf("\n");
