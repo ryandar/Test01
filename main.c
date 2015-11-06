@@ -11,6 +11,6 @@ void main(void)
 	printf("\n");
 	printf("Entered %c\n", c);
 
-	printf("Complete\n\n");
+	printf("\nComplete");
 	getch();
 }
