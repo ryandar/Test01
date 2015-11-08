@@ -1,5 +1,7 @@
 #include "stdio.h"
+#include "conio.h"
 #include "stdlib.h"
+#include "windows.h"
 
 struct cache_item
 {
@@ -14,103 +16,9 @@ int gInputIndex = 0;
 
 struct cache_item* gCacheItems[10];
 
-bool EnterName();
-void Display();
-void ClearScreen();
-
-void AddCacheItem(char* name)
+void ClearScreen()
 {
-	int index = GetCacheIndex(name);
-	int available_index;
-
-	if (index == -1)
-	{
-		available_index = GetAvailableIndex();
-		if (available_index == -1)
-		{
-			return;
-		}
-		
-		gCacheItems[available_index] = malloc(sizeof(struct cache_item));
-
-		gCacheItems[available_index]->name = name;
-		gCacheItems[available_index]->time_to_live = 30;
-		
-		return;
-	}
-
-	gCacheItems[index]->time_to_live = 30;
-}
-
-int GetAvailableIndex()
-{
-	int count = sizeof(gCacheItems)/sizeof(gCacheItems[0]);
-	int i;
-
-	for (i=0; i<count; i++)
-	{
-		if (gCacheItems[i] == NULL)
-		{
-			return i;
-		}
-	}
-
-	return -1;
-}
-
-int GetCacheIndex(char* name)
-{
-	int count = sizeof(gCacheItems)/sizeof(gCacheItems[0]);
-	int i;
-
-	for (i=0; i<count; i++)
-	{
-		if (gCacheItems[i] != NULL && strcmp(gCacheItems[i]->name, name) == 0)
-		{
-			return i;
-		}
-	}
-
-	return -1;
-}
-
-void main(void)
-{
-	Display();
-
-	while (EnterName())
-	{
-		ClearScreen();
-		Display();
-	}
-}
-
-bool EnterName()
-{
-	char input[50] = { 0 };
-	int size = 0;
-	char *name = NULL;
-
-	printf("\n");
-	printf("Enter name or X to exit: ");
-	scanf("%s", input);
-
-	if (!strcmp("X",input))
-	{
-		return false;
-	}
-
-	size = strlen(input) * sizeof(char);
-	name = malloc(size);
-	strcpy(name, input);
-	
-	AddCacheItem(name);
-
-	gInput[gInputIndex] = name;
-
-	gInputIndex++;
-
-	return true;
+	system("cls");
 }
 
 void Display()
@@ -169,8 +77,146 @@ void Display()
 	}
 }
 
-
-void ClearScreen()
+void TraverseCache()
 {
-	system("cls");
+	while (true)
+	{
+		int count = sizeof(gCacheItems)/sizeof(gCacheItems[0]);
+		int i;
+
+		for (i=0; i<count; i++)
+		{
+			if (gCacheItems[i] == NULL)
+			{
+				continue;
+			}
+
+			gCacheItems[i]->time_to_live -= 1;
+		}
+
+		Sleep(1000);
+	}
+}
+
+void AddCacheItem(char* name)
+{
+	int index = GetCacheIndex(name);
+	int available_index;
+
+	if (index == -1)
+	{
+		available_index = GetAvailableIndex();
+		if (available_index == -1)
+		{
+			return;
+		}
+		
+		gCacheItems[available_index] = malloc(sizeof(struct cache_item));
+
+		gCacheItems[available_index]->name = name;
+		gCacheItems[available_index]->time_to_live = 30;
+		
+		return;
+	}
+
+	gCacheItems[index]->time_to_live = 30;
+}
+
+int GetAvailableIndex()
+{
+	int count = sizeof(gCacheItems)/sizeof(gCacheItems[0]);
+	int i;
+
+	for (i=0; i<count; i++)
+	{
+		if (gCacheItems[i] == NULL)
+		{
+			return i;
+		}
+	}
+
+	return -1;
+}
+
+int GetCacheIndex(char* name)
+{
+	int count = sizeof(gCacheItems)/sizeof(gCacheItems[0]);
+	int i;
+
+	for (i=0; i<count; i++)
+	{
+		if (gCacheItems[i] == NULL)
+		{
+			continue;
+		}
+
+		if (strcmp(gCacheItems[i]->name, name) == 0)
+		{
+			return i;
+		}
+	}
+
+	return -1;
+}
+
+bool EnterName()
+{
+	char input[50] = { 0 };
+	int size = 0;
+	char *name = NULL;
+
+	printf("\n");
+	printf("Enter name or X to cancel: ");
+	scanf("%s", input);
+
+	if (strcmp("X",input) == 0)
+	{
+		return false;
+	}
+
+	size = strlen(input) * sizeof(char);
+	name = malloc(size);
+	strcpy(name, input);
+	
+	AddCacheItem(name);
+	gInput[gInputIndex] = name;
+	gInputIndex++;
+
+	return true;
+}
+
+void main(void)
+{
+	Display();
+	CreateThread(NULL, NULL, (LPTHREAD_START_ROUTINE)TraverseCache, NULL, NULL, NULL);
+
+	while (true)
+	{
+	   if (_kbhit()) 
+	   {
+			// use _getch to throw key away
+			char c = _getch();
+			printf("%c", c);
+
+			if (c == 'X')
+			{
+				break;
+			}
+			
+			if (c == '1')
+			{
+				ClearScreen();
+				Display();
+				EnterName();
+			}
+	   } 
+	   else 
+	   {
+			ClearScreen();
+			Display();		
+			printf("\n");
+			printf("Enter 1 to enter a name or X to exit: ");
+			Sleep(1000);
+	   }
+	}
 }
