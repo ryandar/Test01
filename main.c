@@ -77,6 +77,7 @@ void Display()
 	}
 }
 
+// note this function will run on a seperate thread
 void TraverseCache()
 {
 	while (true)
